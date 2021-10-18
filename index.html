@@ -116,19 +116,10 @@
 			<button class='btn btn-primary' style='padding: 0; float:right; margin:10px' onclick='sync()'><i class="fas fa-sync-alt" id='icon'></i></button>
 			<form onsubmit="return false" style='display: flex; justify-content: center; padding: 25px;'>
 				<input type='text' class="form-control" style='width:300px;' maxlength='20' id='add'>
-				<button type=submit class='btn btn-primary' onclick='Add()'>Ajouter</button>
+				<button type=submit class='btn btn-primary' onclick='addEle(document.getElementById("add").value)'>Ajouter</button>
 			</form>
 			<div id='divland'>
-			<?php
-			    $json = json_decode(file_get_contents('alea.json'));
-			    foreach($json->lstMots as $mot){
-			        echo "<div class='topdiv' id='$mot'>
-			                 $mot<button class='btn close' onclick=\"deleteEle('$mot')\">
-			                    <i class='fas fa-times'></i>
-		                    </button>
-			        </div>";
-			    }
-			?>
+                $$divland
 			</div>
 			<button class='btn btn-success' onclick='Roulette()' style='margin:20px 10px'>Roulette</button>
 			<button class='btn btn-danger' onclick='RAZ()' style='margin:20px 10px'>RAZ</button>
@@ -136,6 +127,48 @@
 	</body>
 
 	<script>
+        let divland = document.getElementById('divland');
 
+        //const ws = new WebSocket('ws://localhost:5545/');
+        const ws = new WebSocket('wss://groulette.herokuapp.com/');
+        ws.onmessage = function(e) {
+            let params = e.data.split(':');
+			switch(params[0]){
+	            case 'add':
+					var div = document.createElement('div');
+					div.className = 'topdiv';
+					div.id = params[1];
+					div.innerHTML = params[1] + "<button class='btn close' onclick=\"deleteEle('"+params[1]+"')\"><i class='fas fa-times'></i></button>";
+					divland.appendChild(div);
+	                break;
+	            case 'delete':
+					var div = document.getElementById(params[1]);
+					div.classList.add('closing');
+					setTimeout(() => divland.removeChild(div), 500);
+	                break;
+	            case 'print':
+					Swal.fire({
+						icon: 'success',
+						title: params[1]
+					});
+	                break;
+	            case 'raz':
+	                $('#divland').html('');
+					break;
+	        }
+        };
+
+        function addEle(id){
+		    ws.send('add:'+id);
+		}
+        function deleteEle(id){
+		    ws.send('delete:'+id);
+		}
+		function Roulette(){
+			ws.send('roll:0');
+		}
+		function RAZ(){
+			ws.send('raz:0');
+		}
 	</script>
 </html>
