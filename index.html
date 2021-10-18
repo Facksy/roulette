@@ -1,0 +1,141 @@
+<html>
+	<head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.all.min.js'></script>
+    	<script src="https://kit.fontawesome.com/0c4dca98b6.js" crossorigin="anonymous"></script>
+		<style>
+			body{
+				height:100%;
+				width:100%;
+				background: linear-gradient(135deg, rgba(184,187,174,1) 2%, rgba(225,227,136,1) 79%) !important;
+			}
+			.midd{
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				border: 1px solid gray;
+				border-radius: 5px;
+				box-shadow: 5px 5px 10px grey;
+				background-color: rgba(255,255,255,0.5);
+				width:70%;
+				height:fit-content;
+				max-height:80%;
+				text-align:center;
+				overflow:auto;
+			}
+			#divland{
+				display: inline-flex;
+				flex-wrap: wrap;
+				justify-content: center;
+				align-content: flex-start;
+				box-shadow: 5px 5px 15px #00000061;
+				width: 95%;
+				max-height:45vh;
+				border-radius: 15px;
+				overflow:auto;
+				min-height:50px;
+			}
+			.topdiv{
+				border: 3px dashed black;
+				background-color: white;
+				border-radius: 5px;
+				min-width:100px;
+				width:fit-content;
+				padding:5px;
+				height:100px;
+				margin: 30px;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				animation: 0.5s slidein;
+				position:relative;
+			}
+			.topdiv > span{
+				cursor:pointer;
+				float:right;
+			}
+			#icon{
+				transition: transform 1s;
+				padding:8px;
+			}
+			#icon:hover{
+				transform: rotate(450deg);
+			}
+			.close{
+				color: red !important;
+				background-color: black !important;
+				position: absolute;
+				top: 92%;
+				left: 92%;
+				padding: 0 !important;
+				border-radius: 10px !important;
+				width: 18px;
+			}
+			@keyframes slidein {
+				from{
+					height:0;
+					min-width:0;
+					opacity:0;
+					padding:0;
+					margin: 0;
+				}
+				to{
+					height:100px;
+					width:fit-content;
+					opacity:1;
+					padding:5px;
+					margin: 30px;
+				}
+			}
+			@keyframes slideout {
+				from{
+					height:100px;
+					width:fit-content;
+					opacity:1;
+					padding:5px;
+					margin: 30px;
+				}
+				to{
+					height:0;
+					min-width:0;
+					width:0;
+					opacity:0;
+					padding:0;
+					margin: 0;
+				}
+			}
+			.closing{
+				animation: 0.5s slideout;
+			}
+		</style>
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+	</head>
+	<body>
+		<div class='midd'>
+			<button class='btn btn-primary' style='padding: 0; float:right; margin:10px' onclick='sync()'><i class="fas fa-sync-alt" id='icon'></i></button>
+			<form onsubmit="return false" style='display: flex; justify-content: center; padding: 25px;'>
+				<input type='text' class="form-control" style='width:300px;' maxlength='20' id='add'>
+				<button type=submit class='btn btn-primary' onclick='Add()'>Ajouter</button>
+			</form>
+			<div id='divland'>
+			<?php
+			    $json = json_decode(file_get_contents('alea.json'));
+			    foreach($json->lstMots as $mot){
+			        echo "<div class='topdiv' id='$mot'>
+			                 $mot<button class='btn close' onclick=\"deleteEle('$mot')\">
+			                    <i class='fas fa-times'></i>
+		                    </button>
+			        </div>";
+			    }
+			?>
+			</div>
+			<button class='btn btn-success' onclick='Roulette()' style='margin:20px 10px'>Roulette</button>
+			<button class='btn btn-danger' onclick='RAZ()' style='margin:20px 10px'>RAZ</button>
+		</div>
+	</body>
+
+	<script>
+
+	</script>
+</html>

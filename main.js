@@ -1,26 +1,15 @@
+const fs = require('fs');
 const http = require('http');
 const WebSocketServer = require('websocket').server;
 const server = http.createServer((req, res) => {
-    res.end(`<!DOCTYPE html>
-        <html>
-        <head>
-          <title>WebSocket Playground</title>
-        </head>
-        <body>
-        </body>
-        <script>
-        const ws = new WebSocket('wss://groulette.herokuapp.com/');
-        ws.onopen = function() {
-            console.log('WebSocket Client Connected');
-            ws.send('Hi this is web clienteeeee.');
-        };
-        ws.onmessage = function(e) {
-          console.log("Received: '" + e.data + "'");
-        };
-        </script>
-        </html>`);
+    fs.readFile('./index.html', 'utf8' , (err, data) => {
+        if (!err)
+            res.end(data);
+    })
 });
 server.listen(process.env.PORT);
+
+lstWS = [];
 const wsServer = new WebSocketServer({
     httpServer: server
 });
@@ -31,6 +20,9 @@ wsServer.on('request', function(request) {
         connection.sendUTF('Hi this is WebSocket server!');
     });
     connection.on('close', function(reasonCode, description) {
-        console.log('Client has disconnected.');
+        const index = lstWS.indexOf(connection);
+        if(index > -1)
+            array.splice(index, 1);
     });
+    lstWS.push(connection);
 });
