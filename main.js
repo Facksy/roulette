@@ -14,7 +14,7 @@ let lstWS = [];
 let lstNbr = [];
 
 const server = http.createServer((req, res) => {
-    fs.readFile('C:\\Users\\kingl\\Desktop\\roulette/index.html', 'utf8' , (err, data) => {
+    fs.readFile('./index.html', 'utf8' , (err, data) => {
         if (!err){
             let newdata ='';
             for(let nbr of lstNbr){
