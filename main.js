@@ -12,7 +12,7 @@ const server = http.createServer((req, res) => {
         const ws = new WebSocket('wss://groulette.herokuapp.com/');
         ws.onopen = function() {
             console.log('WebSocket Client Connected');
-            ws.send('Hi this is web client.');
+            ws.send('Hi this is web clienteeeee.');
         };
         ws.onmessage = function(e) {
           console.log("Received: '" + e.data + "'");
